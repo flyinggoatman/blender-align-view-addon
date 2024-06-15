@@ -1,5 +1,5 @@
 
-# Align View to Normal with Pie Menu
+# Align View to Normal with Pie Menu \ List Menu
 
 This Blender addon aligns the view to the selected normal in various directions from the right-click menu in edit mode. It now also includes a pie menu that can be accessed with the `Ctrl+Shift+A` shortcut.
 
