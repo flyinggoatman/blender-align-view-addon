@@ -26,7 +26,8 @@ class AlignViewToNormalPreferences(bpy.types.AddonPreferences):
     documentation_url: bpy.props.StringProperty(
         name="Documentation URL",
         description="URL for the add-on's documentation",
-        default="https://github.com/flyinggoatman/blender-align-view-addon"
+        default="https://example.com"  # Replace with your actual documentation URL
+    )
 
     def draw(self, context):
         layout = self.layout
@@ -104,7 +105,6 @@ class VIEW3D_MT_align_view_to_normal_pie(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout.menu_pie()
         valid_selection = is_selection_valid(context)
-        layout.enabled = valid_selection
         layout.operator("view3d.align_to_normal", text="Top").direction = 'TOP'
         layout.operator("view3d.align_to_normal", text="Bottom").direction = 'BOTTOM'
         layout.operator("view3d.align_to_normal", text="Front").direction = 'FRONT'
@@ -113,7 +113,6 @@ class VIEW3D_MT_align_view_to_normal_pie(bpy.types.Menu):
         layout.operator("view3d.align_to_normal", text="Left").direction = 'LEFT'
         
         layout.separator()
-        layout.enabled = True
         box = layout.box()
         col = box.column()
         col.label(text="Extra Options")
@@ -126,7 +125,6 @@ class VIEW3D_MT_align_view_to_normal_menu(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
         valid_selection = is_selection_valid(context)
-        layout.enabled = valid_selection
         layout.operator("view3d.align_to_normal", text="Top").direction = 'TOP'
         layout.operator("view3d.align_to_normal", text="Bottom").direction = 'BOTTOM'
         layout.operator("view3d.align_to_normal", text="Front").direction = 'FRONT'
