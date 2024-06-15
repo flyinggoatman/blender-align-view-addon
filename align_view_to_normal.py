@@ -5,6 +5,7 @@ bl_info = {
     "category": "3D View",
     "description": "Align the view to the selected normal in various directions from the right-click menu in edit mode",
     "location": "View3D > Edit Mode > Right-click Menu",
+    "author": "flyinggoatman"
 }
 
 import bpy
