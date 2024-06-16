@@ -38,7 +38,7 @@ class AlignViewToNormalPreferences(bpy.types.AddonPreferences):
         else:
             layout.label(text="List Menu is enabled")
 
-class OpenURL(bpy.types.Operator):
+class OpenURL_view(bpy.types.Operator):
     bl_idname = "wm.url_open"
     bl_label = "Open URL"
     
@@ -99,7 +99,7 @@ def is_selection_valid(context):
                any(vert.select for vert in mesh.verts)
     return False
 
-class VIEW3D_MT_align_view_to_normal_pie(bpy.types.Menu):
+class VIEW3D_MT_align_view_to_normal_pie_view(bpy.types.Menu):
     bl_label = "Align View to Normal Pie Menu"
 
     def draw(self, context):
@@ -119,7 +119,7 @@ class VIEW3D_MT_align_view_to_normal_pie(bpy.types.Menu):
         col.operator("view3d.dummy_operator", text="Coming Soon 1")
         col.operator("view3d.dummy_operator", text="Coming Soon 2")
 
-class VIEW3D_MT_align_view_to_normal_menu(bpy.types.Menu):
+class VIEW3D_MT_align_view_to_normal_menu_view(bpy.types.Menu):
     bl_label = "Align View to Normal"
 
     def draw(self, context):
@@ -132,9 +132,9 @@ class VIEW3D_MT_align_view_to_normal_menu(bpy.types.Menu):
         layout.operator("view3d.align_to_normal", text="Right").direction = 'RIGHT'
         layout.operator("view3d.align_to_normal", text="Left").direction = 'LEFT'
         
-        layout.menu("VIEW3D_MT_align_view_to_normal_submenu")
+        layout.menu("VIEW3D_MT_align_view_to_normal_submenu_view")
 
-class VIEW3D_MT_align_view_to_normal_submenu(bpy.types.Menu):
+class VIEW3D_MT_align_view_to_normal_submenu_view(bpy.types.Menu):
     bl_label = "Extra Options"
 
     def draw(self, context):
@@ -153,11 +153,11 @@ class VIEW3D_OT_dummy_operator(bpy.types.Operator):
 
 def menu_func_pie(self, context):
     layout = self.layout
-    layout.menu("VIEW3D_MT_align_view_to_normal_pie", icon="VIEW3D")
+    layout.menu("VIEW3D_MT_align_view_to_normal_pie_view", icon="VIEW3D")
 
 def menu_func_list(self, context):
     layout = self.layout
-    layout.menu("VIEW3D_MT_align_view_to_normal_menu", icon="VIEW3D")
+    layout.menu("VIEW3D_MT_align_view_to_normal_menu_view", icon="VIEW3D")
 
 def update_menu(self, context):
     unregister()
@@ -165,11 +165,11 @@ def update_menu(self, context):
 
 def register():
     bpy.utils.register_class(AlignViewToNormalPreferences)
-    bpy.utils.register_class(OpenURL)
+    bpy.utils.register_class(OpenURL_view)
     bpy.utils.register_class(VIEW3D_OT_align_to_normal)
-    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_pie)
-    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_menu)
-    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_submenu)
+    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_pie_view)
+    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_menu_view)
+    bpy.utils.register_class(VIEW3D_MT_align_view_to_normal_submenu_view)
     bpy.utils.register_class(VIEW3D_OT_dummy_operator)
     
     prefs = bpy.context.preferences.addons.get(__name__, None)
@@ -184,10 +184,10 @@ def register():
         km = wm.keyconfigs.addon.keymaps.new(name='Mesh', space_type='EMPTY')
         if prefs.menu_type == 'PIE':
             kmi = km.keymap_items.new("wm.call_menu_pie", 'A', 'PRESS', ctrl=True, shift=True)
-            kmi.properties.name = "VIEW3D_MT_align_view_to_normal_pie"
+            kmi.properties.name = "VIEW3D_MT_align_view_to_normal_pie_view"
         else:
             kmi = km.keymap_items.new("wm.call_menu", 'A', 'PRESS', ctrl=True, shift=True)
-            kmi.properties.name = "VIEW3D_MT_align_view_to_normal_menu"
+            kmi.properties.name = "VIEW3D_MT_align_view_to_normal_menu_view"
 
 def unregister():
     prefs = bpy.context.preferences.addons.get(__name__, None)
@@ -199,11 +199,11 @@ def unregister():
             bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
 
     bpy.utils.unregister_class(AlignViewToNormalPreferences)
-    bpy.utils.unregister_class(OpenURL)
+    bpy.utils.unregister_class(OpenURL_view)
     bpy.utils.unregister_class(VIEW3D_OT_align_to_normal)
-    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_pie)
-    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_menu)
-    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_submenu)
+    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_pie_view)
+    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_menu_view)
+    bpy.utils.unregister_class(VIEW3D_MT_align_view_to_normal_submenu_view)
     bpy.utils.unregister_class(VIEW3D_OT_dummy_operator)
     
     wm = bpy.context.window_manager
