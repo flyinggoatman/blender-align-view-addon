@@ -36,7 +36,9 @@ class AlignViewToNormalPreferences(bpy.types.AddonPreferences):
         if self.menu_type == 'PIE':
             layout.label(text="Pie Menu is enabled")
         else:
+            layout.enabled = False  
             layout.label(text="List Menu is enabled")
+            layout.enabled = True  
 
 class OpenURL_view(bpy.types.Operator):
     bl_idname = "wm.url_open"
@@ -177,13 +179,11 @@ def register():
     prefs = bpy.context.preferences.addons.get(__name__, None)
     if prefs:
         prefs = prefs.preferences
-        
-        if prefs.menu_type == 'PIE':
-            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
-            bpy.types.VIEW3D_MT_edit_mesh_context_menu.append(menu_func_pie)
-        else:
-            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_pie)
+
+        # Ensure only one instance of the menu is appended
+        if not hasattr(bpy.types, "VIEW3D_MT_edit_mesh_context_menu_aligned"):
             bpy.types.VIEW3D_MT_edit_mesh_context_menu.append(menu_func_list)
+            bpy.types.VIEW3D_MT_edit_mesh_context_menu_aligned = True
     
         wm = bpy.context.window_manager
         km = wm.keyconfigs.addon.keymaps.new(name='Mesh', space_type='EMPTY')
@@ -199,8 +199,9 @@ def unregister():
     prefs = bpy.context.preferences.addons.get(__name__, None)
     if prefs:
         prefs = prefs.preferences
-        bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_pie)
-        bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
+        if hasattr(bpy.types, "VIEW3D_MT_edit_mesh_context_menu_aligned"):
+            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
+            del bpy.types.VIEW3D_MT_edit_mesh_context_menu_aligned
 
     bpy.utils.unregister_class(AlignViewToNormalPreferences)
     bpy.utils.unregister_class(OpenURL_view)
@@ -222,6 +223,8 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-# TODO: The Last Operation menu goes a little rogue and throws a tantrum when you change your direction choice.
+
 bpy.app.handlers.load_post.append(update_menu)
 bpy.app.handlers.depsgraph_update_post.append(update_menu)
+
+
