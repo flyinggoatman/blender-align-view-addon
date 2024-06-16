@@ -163,6 +163,8 @@ def update_menu(self, context):
     unregister()
     register()
 
+addon_keymaps = []
+
 def register():
     bpy.utils.register_class(AlignViewToNormalPreferences)
     bpy.utils.register_class(OpenURL_view)
@@ -175,9 +177,12 @@ def register():
     prefs = bpy.context.preferences.addons.get(__name__, None)
     if prefs:
         prefs = prefs.preferences
+        
         if prefs.menu_type == 'PIE':
+            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
             bpy.types.VIEW3D_MT_edit_mesh_context_menu.append(menu_func_pie)
         else:
+            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_pie)
             bpy.types.VIEW3D_MT_edit_mesh_context_menu.append(menu_func_list)
     
         wm = bpy.context.window_manager
@@ -188,15 +193,14 @@ def register():
         else:
             kmi = km.keymap_items.new("wm.call_menu", 'A', 'PRESS', ctrl=True, shift=True)
             kmi.properties.name = "VIEW3D_MT_align_view_to_normal_menu_view"
+        addon_keymaps.append((km, kmi))
 
 def unregister():
     prefs = bpy.context.preferences.addons.get(__name__, None)
     if prefs:
         prefs = prefs.preferences
-        if prefs.menu_type == 'PIE':
-            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_pie)
-        else:
-            bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
+        bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_pie)
+        bpy.types.VIEW3D_MT_edit_mesh_context_menu.remove(menu_func_list)
 
     bpy.utils.unregister_class(AlignViewToNormalPreferences)
     bpy.utils.unregister_class(OpenURL_view)
@@ -214,8 +218,10 @@ def unregister():
                 km.keymap_items.remove(kmi)
                 break
 
+    addon_keymaps.clear()
+
 if __name__ == "__main__":
     register()
-
+# TODO: The Last Operation menu goes a little rogue and throws a tantrum when you change your direction choice.
 bpy.app.handlers.load_post.append(update_menu)
 bpy.app.handlers.depsgraph_update_post.append(update_menu)
