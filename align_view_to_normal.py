@@ -26,7 +26,7 @@ class AlignViewToNormalPreferences(bpy.types.AddonPreferences):
     documentation_url: bpy.props.StringProperty(
         name="Documentation URL",
         description="URL for the add-on's documentation",
-        default="https://example.com"  # Replace with your actual documentation URL
+        default="https://github.com/flyinggoatman/blender-align-view-addon"
     )
 
     def draw(self, context):
