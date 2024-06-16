@@ -21,7 +21,7 @@ This Blender add-on allows users to align the view to the selected normal in var
 ### Installing from ZIP File
 
 1. Download the ZIP file:
-   - [Download the ZIP file directly](https://github.com/flyinggoatman/blender-align-view-addon/releases/tag/Alpha)
+   - [Download the ZIP file directly](https://github.com/flyinggoatman/blender-align-view-addon/releases/)
    - Or, download the repository as a ZIP from GitHub.
 2. Open Blender and go to `Edit > Preferences > Add-ons`.
 3. Click on `Install...` and select the downloaded ZIP file.
